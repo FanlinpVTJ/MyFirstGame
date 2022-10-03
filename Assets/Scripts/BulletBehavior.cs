@@ -18,14 +18,21 @@ public class BulletBehavior : MonoBehaviour
     private bool useShootOrigin;
 
     public float bulletSpeed = 100f;
+
+    private int reloadTime = 4;
+    private bool isReloading = true;
+
     
-   
+
     private void Update()
     {
-                     
-        if (Input.GetMouseButtonDown(0))
+
+        if (Input.GetMouseButtonDown(0) && isReloading)
         {
-            if(useShootOrigin)
+           
+            StartCoroutine(ReloadGun());
+
+            if (useShootOrigin)
             {
                 FireBulletFromShootOrigin();
             }
@@ -34,13 +41,8 @@ public class BulletBehavior : MonoBehaviour
                 //FireBulletFromOffset();
                 FireWithQuaternions();
             }
+            
         }
-        
-    }
-
-    private void FixedUpdate()
-    {
-        
     }
 
     private void FireBulletFromOffset()
@@ -70,7 +72,14 @@ public class BulletBehavior : MonoBehaviour
 
         Rigidbody bulletRB = newBullet.GetComponent<Rigidbody>();
         bulletRB.velocity = transform.forward * bulletSpeed;
-
+        
     }
 
+    IEnumerator ReloadGun()
+    {
+        isReloading = false;
+       
+        yield return new WaitForSeconds(reloadTime);
+        isReloading = true;
+    }
 }

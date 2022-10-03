@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HealthSystem : MonoBehaviour
 {
     [SerializeField]
     private ItemCollector itemCollector;
+
+    [SerializeField]
+    private BulletOnCollisionRegistration bulletOnCollisionRegistration;
 
     [SerializeField]
     private int maxHelth = 100;
@@ -14,11 +18,14 @@ public class HealthSystem : MonoBehaviour
     void OnEnable()
     {
         itemCollector.ItemCollected += TakeHeal;
+        bulletOnCollisionRegistration.bulletOnCollisionRegistration += TakeDamage;
     }
     void OnDisable()
     {
         itemCollector.ItemCollected -= TakeHeal;
+        bulletOnCollisionRegistration.bulletOnCollisionRegistration -= TakeDamage;
     }
+        
 
     private void TakeHeal()
     {
@@ -34,17 +41,18 @@ public class HealthSystem : MonoBehaviour
         Debug.Log(currentHealth);
     }
 
-    private void TakeDamage(int damage)
+    private void TakeDamage()
     {
         if (currentHealth > 0)
         {
-            currentHealth = currentHealth - damage;
+            currentHealth = currentHealth - 10;
 
             if(currentHealth <= 0)
             {
                 Death();
             }
         }
+        Debug.Log(currentHealth);
     }
 
     private void Death()
@@ -52,6 +60,7 @@ public class HealthSystem : MonoBehaviour
         if (currentHealth == 0)
         {
             Destroy(gameObject);
+            //SceneManager.LoadScene(0);
         }
     }
 

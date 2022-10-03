@@ -10,6 +10,8 @@ using Newtonsoft.Json.Linq;
 using Unity.VisualScripting;
 using System;
 
+
+
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
@@ -41,6 +43,7 @@ public class GameManager : MonoBehaviour
         if (collectedItemsCount == maxItemCountToWin)
         {
             Debug.Log("You WIN!");
+            SceneManager.LoadScene(0);
         }
     }
 

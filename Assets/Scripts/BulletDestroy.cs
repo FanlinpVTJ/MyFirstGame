@@ -4,9 +4,20 @@ using UnityEngine;
 
 public class BulletDestroy : MonoBehaviour
 {
-    private float onScreenDelay = 3f;
-     private void Start()
+    private float onScreenDelay = 1f;
+    
+    private void OnCollisionEnter(Collision collision)
     {
-        Destroy(gameObject, onScreenDelay);
+        var damage = collision.gameObject.GetComponent<HealthSystem>();
+
+        if (damage != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject, onScreenDelay);
+        }
     }
+
 }
