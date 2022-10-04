@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 //using UnityEngine.Windows;
 
+// TODO: это не поведение пули, это поведение оружия
+// А вот пули - это твои шарики, на которых лежит BulletDestroy,
+// который мы в итоге переименуем в Bullet
+// public class Weapon
 public class BulletBehavior : MonoBehaviour
 {
     [SerializeField]
