@@ -10,7 +10,7 @@ public class BulletOnCollisionRegistration : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        var damage = collision.gameObject.GetComponent<BulletDestroy>();
+        var damage = collision.gameObject.GetComponent<BulletBehaviour>();
 
         if (damage != null)
         {

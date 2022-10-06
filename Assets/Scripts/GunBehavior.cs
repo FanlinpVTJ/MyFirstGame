@@ -7,13 +7,13 @@ using UnityEngine;
 // А вот пули - это твои шарики, на которых лежит BulletDestroy,
 // который мы в итоге переименуем в Bullet
 // public class Weapon
-public class BulletBehavior : MonoBehaviour
+public class GunBehavior : MonoBehaviour
 {
     [SerializeField]
     private GameObject bullet;
 
     [SerializeField]
-    private Transform shootOrigin;
+    private Transform gunPlace;
 
     [SerializeField]
     private Vector3 shootOffset;
@@ -23,7 +23,7 @@ public class BulletBehavior : MonoBehaviour
 
     public float bulletSpeed = 100f;
 
-    private int reloadTime = 4;
+    private int reloadTime = 1;
     private bool isReloading = true;
 
     
@@ -33,19 +33,18 @@ public class BulletBehavior : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && isReloading)
         {
-           
-            StartCoroutine(ReloadGun());
+           StartCoroutine(ReloadGun());
 
             if (useShootOrigin)
             {
                 FireBulletFromShootOrigin();
+                Debug.Log("useShootOrigin");
             }
             else
             {
                 //FireBulletFromOffset();
                 FireWithQuaternions();
             }
-            
         }
     }
 
@@ -62,10 +61,10 @@ public class BulletBehavior : MonoBehaviour
     private void FireBulletFromShootOrigin()
     {
         GameObject newBullet = Instantiate(bullet,
-                shootOrigin.position, shootOrigin.rotation) as GameObject;
+                gunPlace.position, gunPlace.rotation) as GameObject;
 
         Rigidbody bulletRB = newBullet.GetComponent<Rigidbody>();
-        bulletRB.velocity = shootOrigin.forward * bulletSpeed;
+        bulletRB.velocity = gunPlace.forward * bulletSpeed;
     }
 
     private void FireWithQuaternions()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,11 @@ using UnityEngine.AI;
 
 public class EnemyBehavior : MonoBehaviour
 {
+    public event Action PlayerDetected;
+
     [SerializeField]
     private Transform patrolRoute;
-    private Transform player;
+
     private int locationIndex = 0;
     public NavMeshAgent agent;
     public List<Transform> locations;
@@ -18,7 +21,6 @@ public class EnemyBehavior : MonoBehaviour
         InitializePatrolRoute();
         agent = GetComponent<NavMeshAgent>();
         Debug.Log(agent);
-        player = GameObject.Find("Player_Body").transform;
         MoveToNextPatrolLocation();
     }
     
@@ -57,19 +59,30 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    //Обнаружение игрока
+
+    private void OnTriggerEnter(Collider player)
     {
-        if (other.name == "Player_Body")
+        var playerRegistration = player.gameObject.GetComponent<PlayerMovement>();
+
+        if (playerRegistration != null)
         {
-            Debug.Log("Player detected- - Attack!");
-            agent.destination = player.position;
+            agent.destination = playerRegistration.transform.position;
+            transform.LookAt(playerRegistration.transform.position);
+            PlayerDetected?.Invoke();
+            Debug.Log("Attack!");
         }
     }
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider player)
     {
-        if (other.name == "Player_Body")
+        var playerRegistration = player.gameObject.GetComponent<PlayerMovement>();
+
+        if (playerRegistration != null)
         {
-            Debug.Log("Oooh no, he left!");
+            agent.destination = locations[locationIndex].position;
+            
+            Debug.Log("Oh no! I lost him!");
         }
     }
+   
 }
